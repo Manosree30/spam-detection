@@ -65,7 +65,8 @@ Model can be loaded later without retraining
 
 ## Deployment 
 
-A Streamlit app can be used for interactive SMS spam detection
+A Streamlit app can be used for interactive SMS spam detection 
+APP - Spam-detection("https://manosree30-spam-detection-app-ttygrt.streamlit.app/")
 
 ## Requirements
 
