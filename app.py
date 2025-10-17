@@ -5,6 +5,11 @@ import pandas as pd
 import pickle
 
 # -------------------------------
+# ✅ Must be the first Streamlit command
+# -------------------------------
+st.set_page_config(page_title="SMS Spam Detector", page_icon="📩", layout="centered")
+
+# -------------------------------
 # Load the saved model
 # -------------------------------
 @st.cache_resource
@@ -18,11 +23,31 @@ model = load_model()
 # -------------------------------
 # Streamlit Interface
 # -------------------------------
-st.set_page_config(page_title="SMS Spam Detector", page_icon="📩", layout="centered")
-
-st.title("📩 SMS Spam Detection App")
 st.markdown("""
-Enter the SMS details in the sidebar and the model will predict if it is **Spam** or **Not Spam**.
+    <style>
+        body {
+            background-color: #f9fafc;
+        }
+        .main-title {
+            text-align: center;
+            color: #2b5876;
+            font-size: 2.2em;
+            font-weight: bold;
+        }
+        .prediction-box {
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+# Title
+st.markdown("<p class='main-title'>📩 SMS Spam Detection App</p>", unsafe_allow_html=True)
+st.markdown("""
+Enter the SMS details in the sidebar and the model will predict whether it is **Spam** or **Not Spam**.
 """)
 
 # Sidebar inputs
@@ -35,7 +60,7 @@ sms_len = st.sidebar.number_input("SMS Length (characters)", min_value=1, value=
 st.markdown("---")
 
 # Button for prediction
-if st.button("Predict Spam"):
+if st.button("🔍 Predict Spam"):
     new_sms = pd.DataFrame({
         'word_freq_free': [word_free],
         'word_freq_win': [word_win],
@@ -46,9 +71,9 @@ if st.button("Predict Spam"):
     prediction = model.predict(new_sms)
     
     if prediction[0] == 1:
-        st.markdown("<h2 style='color:red;'>🚨 This SMS is Spam</h2>", unsafe_allow_html=True)
+        st.markdown("<div class='prediction-box' style='background-color:#ffe6e6; color:#b30000;'>🚨 This SMS is Spam</div>", unsafe_allow_html=True)
     else:
-        st.markdown("<h2 style='color:green;'>✅ This SMS is Not Spam</h2>", unsafe_allow_html=True)
+        st.markdown("<div class='prediction-box' style='background-color:#e6ffe6; color:#007a00;'>✅ This SMS is Not Spam</div>", unsafe_allow_html=True)
 
 st.markdown("---")
-st.info("💡 Tip: Spam messages often contain words like 'free', 'win', or 'offer' multiple times, and may be longer than normal messages.")
+st.info("💡 Tip: Spam messages often contain words like 'free', 'win', or 'offer' several times, and are usually longer than normal texts.")
